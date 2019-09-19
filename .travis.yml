@@ -1,0 +1,22 @@
+   sudo: required
+   services:
+      - docker
+   before_install:
+      - docker build -t eekdageek/react-test -f ./client/Dockerfile.dev ./client
+   script: 
+      - docker run -e CI=true eekdageek/react-test npm test
+   after_success:
+      - docker build -t eekdageek/multi-client ./client
+      - docker build -t eekdageek/multi-nginx ./nginx
+      - docker build -t eekdageek/multi-server ./server
+      - docker build -t eekdageek/multi-worker ./worker
+      # login to the docker CLI
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+      # take those images and push them to docker hub
+      - docker push eekdageek/multi-client
+      - docker push eekdageek/multi-nginx
+      - docker push eekdageek/multi-server
+      - docker push eekdageek/multi-worker
+  
+
+  
