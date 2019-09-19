@@ -17,6 +17,3 @@
       - docker push eekdageek/multi-nginx
       - docker push eekdageek/multi-server
       - docker push eekdageek/multi-worker
-  
-
-  
